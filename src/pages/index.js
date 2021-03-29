@@ -1,8 +1,7 @@
 import fetch from "isomorphic-unfetch";
 import Link from "next/link";
 import { Button, Card } from "semantic-ui-react";
-import { server } from "../config";
-// import styles from "../styles/Home.module.css";
+import getBaseURL from "../utils/getBaseUrl";
 
 function Home({ notes }) {
   return (
@@ -35,8 +34,8 @@ function Home({ notes }) {
   );
 }
 
-export const getServerSideProps = async () => {
-  const res = await fetch(`${server}/api/notes`);
+export const getServerSideProps = async ({ req }) => {
+  const res = await fetch(`${getBaseURL(req)}/api/notes`);
   const { data } = await res.json();
 
   return {

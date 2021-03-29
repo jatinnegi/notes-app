@@ -2,7 +2,6 @@ import fetch from "isomorphic-unfetch";
 import { useState } from "react";
 import { Button, Form, Loader } from "semantic-ui-react";
 import { useRouter } from "next/router";
-import { server } from "../config";
 
 export default function New() {
   const [formData, setFormData] = useState({
@@ -18,7 +17,7 @@ export default function New() {
 
   const createNote = async () => {
     try {
-      const res = await fetch(`${server}/api/notes`, {
+      const res = await fetch(`/api/notes`, {
         method: "POST",
         headers: {
           Accept: "application/json",

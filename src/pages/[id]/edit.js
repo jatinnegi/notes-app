@@ -2,7 +2,7 @@ import fetch from "isomorphic-unfetch";
 import { useState } from "react";
 import { Button, Form, Loader } from "semantic-ui-react";
 import { useRouter } from "next/router";
-import { server } from "../../config";
+import getBaseURL from "../../utils/getBaseUrl";
 
 export default function Edit({ note }) {
   const [formData, setFormData] = useState({
@@ -18,7 +18,7 @@ export default function Edit({ note }) {
 
   const editNote = async () => {
     try {
-      const res = await fetch(`${server}/api/notes/${router.query.id}`, {
+      const res = await fetch(`/api/notes/${router.query.id}`, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -92,8 +92,8 @@ export default function Edit({ note }) {
   );
 }
 
-export const getServerSideProps = async ({ params }) => {
-  const res = await fetch(`${server}/api/notes/${params.id}`);
+export const getServerSideProps = async ({ req, params }) => {
+  const res = await fetch(`${getBaseURL(req)}/api/notes/${params.id}`);
   const { data } = await res.json();
 
   return {

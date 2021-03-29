@@ -2,7 +2,7 @@ import fetch from "isomorphic-unfetch";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Confirm, Button, Loader } from "semantic-ui-react";
-import { server } from "../../config";
+import getBaseURL from "../../utils/getBaseUrl";
 
 export default function Note({ note }) {
   const [confirm, setConfirm] = useState(false);
@@ -27,7 +27,7 @@ export default function Note({ note }) {
   const deleteNote = async () => {
     const noteId = router.query.id;
     try {
-      const deleted = await fetch(`${server}/api/notes/${noteId}`, {
+      const deleted = await fetch(`/api/notes/${noteId}`, {
         method: "DELETE",
       });
 
@@ -55,8 +55,8 @@ export default function Note({ note }) {
   );
 }
 
-export const getServerSideProps = async ({ params }) => {
-  const res = await fetch(`${server}/api/notes/${params.id}`);
+export const getServerSideProps = async ({ req, params }) => {
+  const res = await fetch(`${getBaseURL(req)}/api/notes/${params.id}`);
   const { data } = await res.json();
 
   return {
